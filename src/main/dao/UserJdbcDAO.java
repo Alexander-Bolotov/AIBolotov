@@ -119,5 +119,8 @@ public class UserJdbcDAO implements UserDAO{
         return null;
     }
 
-
+    @Override
+    public boolean userIsExist(String name, String password) {
+        return false;
+    }
 }

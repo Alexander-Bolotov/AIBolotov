@@ -24,4 +24,6 @@ public interface UserDAO {
     User getUserById(Long id);
 
     String getRoleByName(String name);
+
+    boolean userIsExist(String name, String password);
 }

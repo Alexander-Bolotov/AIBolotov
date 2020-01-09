@@ -46,4 +46,6 @@ public class Service {
     }
 
     public boolean nameIsExist(String name) {return new UserDaoFactory().createDAO().nameIsExist(name);}
+
+    public boolean userIsExist(String name, String password) {return new UserDaoFactory().createDAO().userIsExist(name, password);}
 }

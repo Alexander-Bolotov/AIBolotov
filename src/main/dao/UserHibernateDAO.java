@@ -131,6 +131,27 @@ public class UserHibernateDAO implements UserDAO {
         return null;
     }
 
+    @Override
+    public boolean userIsExist(String name, String password) {
+        Transaction transaction = session.beginTransaction();
+        try {
+            Query query = session.createQuery("FROM User where name ='" + name + "'");
+            List users = query.list();
+            if (users.size() != 0) {
+                User user = (User) users.get(0);
+                if (user.getName().equals(name) && user.getPassword().equals(password)) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (RuntimeException e) {
+            transaction.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+
     public void deleteUserById(long id) {
         Transaction transaction = session.beginTransaction();
         try {

@@ -1,13 +1,16 @@
 <%@ page import="src.main.service.Service" %>
 <% Service service = Service.getInstance();
 %>
+<% HttpSession session1 = request.getSession();%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Admin page</title>
 </head>
 <body>
-<p>Привет, Админ!</p>
+<p>Привет, <%=session1.getAttribute("name")%></p>
+<a href="${pageContext.request.contextPath}/logout">Разлогиниться</a>
 <hr/>
 <form action="${pageContext.request.contextPath}/registration" method="POST">
     <p>

@@ -8,7 +8,8 @@
 <body>
 <h2>Проект 3 предпроектной подготовки Filter User/Admin</h2>
 <hr/>
-<form method="POST" action="${pageContext.request.contextPath}/filter">
+<%--${pageContext.request.contextPath}/filter--%>
+    <form method="POST" action="${pageContext.request.contextPath}/admin">
     <table>
         <tr>
             <td><label for="loginField">Логин</label></td>
