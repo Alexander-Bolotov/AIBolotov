@@ -1,15 +1,27 @@
-<%@ page import="src.main.service.Service" %>
+<%@ page import="service.Service" %>
 <%
     Service service = Service.getInstance();
+
+    HttpSession httpSession = request.getSession();
 %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
 <body>
 <h2>Проект 3 предпроектной подготовки Filter User/Admin</h2>
+<p>
+    Сессия
+    Name = <%= session.getAttribute("name")
+    %>
+    password = <%= session.getAttribute("password")
+    %>
+    role = <%= session.getAttribute("role")
+    %>
+</p>
+<p><a href="${pageContext.request.contextPath}/admin.jsp">Перейти на admin.jsp</a></p>
+<p><a href="${pageContext.request.contextPath}/user.jsp">Перейти на user.jsp</a></p>
 <hr/>
-<%--${pageContext.request.contextPath}/filter--%>
-    <form method="POST" action="${pageContext.request.contextPath}/admin">
+    <form method="POST" action="${pageContext.request.contextPath}/login">
     <table>
         <tr>
             <td><label for="loginField">Логин</label></td>

@@ -1,7 +1,7 @@
-package src.main.servlet;
+package servlet;
 
 
-import src.main.service.Service;
+import service.Service;
 
 
 import javax.servlet.ServletException;
@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet("/delete")
 public class DeleteServlet extends HttpServlet {
@@ -22,8 +23,12 @@ public class DeleteServlet extends HttpServlet {
             resp.getWriter().println("Не введен пользователь");
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         } else {
-            service.deleteUserById(id);
-            req.getRequestDispatcher("index.jsp").forward(req, resp);
+            try {
+                service.deleteUserById(id);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            resp.sendRedirect("/index.jsp");
         }
     }
 }

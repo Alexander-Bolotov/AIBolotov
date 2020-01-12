@@ -1,9 +1,9 @@
-package src.main.dao;
+package dao;
 
+import model.User;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import src.main.model.User;
 
 import java.util.List;
 
@@ -55,8 +55,6 @@ public class UserHibernateDAO implements UserDAO {
         } catch (RuntimeException e) {
             transaction.rollback();
             throw e;
-        } finally {
-            session.close();
         }
     }
 
@@ -67,16 +65,19 @@ public class UserHibernateDAO implements UserDAO {
 
     @Override
     public boolean addUser(User user) {
-        Transaction transaction = session.beginTransaction();
-        try {
-            session.save(user);
-            transaction.commit();
-            return true;
-        } catch (RuntimeException e) {
-            return false;
-        } finally {
-            session.close();
+        if (!nameIsExist(user.getName())) {
+//            Transaction transaction = session.beginTransaction();
+            try {
+                session.save(user);
+//                transaction.commit();
+                return true;
+            } catch (RuntimeException e) {
+                return false;
+            } finally {
+                session.close();
+            }
         }
+        return false;
     }
 
     @Override

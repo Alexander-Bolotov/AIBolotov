@@ -1,4 +1,4 @@
-package src.main.servlet;
+package servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +19,6 @@ public class LogoutServlet extends HttpServlet {
         httpSession.removeAttribute("role");
 
         System.out.println(req.getContextPath());
-        resp.sendRedirect("index.jsp");
+        resp.sendRedirect("/index.jsp");
     }
 }

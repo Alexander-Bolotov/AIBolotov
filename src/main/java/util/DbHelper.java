@@ -1,12 +1,12 @@
-package src.main.model;
+package util;
 
+import model.User;
 import org.hibernate.SessionFactory;
-
-
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -33,28 +33,30 @@ public class DbHelper {
     }
     private static SessionFactory sessionFactory;
 
-    public static SessionFactory getSessionFactory(){
+    public static SessionFactory getSessionFactory() throws IOException {
         if(sessionFactory == null){
             sessionFactory = createSessionFactory();
         }
         return sessionFactory;
     }
 
-    public static Configuration getConfiguration(){
+    private static Configuration getConfiguration() throws IOException {
+
+        ReadProperties readProperties = new ReadProperties();
         Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(User.class);
 
-        configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        configuration.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
-        configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/usersdb?serverTimezone=UTC");
-        configuration.setProperty("hibernate.connection.username", "root");
-        configuration.setProperty("hibernate.connection.password", "admin");
-        configuration.setProperty("hibernate.show_sql", "true");
-        configuration.setProperty("hibernate.hbm2ddl.auto", "update");
+        configuration.setProperty("hibernate.dialect", readProperties.getProp("hibernate_dialect"));
+        configuration.setProperty("hibernate.connection.driver_class",readProperties.getProp("hibernate_connection_driver_class"));
+        configuration.setProperty("hibernate.connection.url", readProperties.getProp("hibernate_connection_url"));
+        configuration.setProperty("hibernate.connection.username", readProperties.getProp("hibernate_connection_username"));
+        configuration.setProperty("hibernate.connection.password", readProperties.getProp("hibernate_connection_password"));
+        configuration.setProperty("hibernate.show_sql", readProperties.getProp("hibernate_show_sql"));
+        configuration.setProperty("hibernate.hbm2ddl.auto", readProperties.getProp("hibernate_hbm2ddl.auto"));
         return configuration;
     }
 
-    private static SessionFactory createSessionFactory() {
+    private static SessionFactory createSessionFactory() throws IOException {
         Configuration configuration = getConfiguration();
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
         builder.applySettings(configuration.getProperties());
@@ -65,22 +67,11 @@ public class DbHelper {
     public Connection getConnection(){
         try {
             DriverManager.registerDriver((Driver) Class.forName("com.mysql.cj.jdbc.Driver").newInstance());
-            StringBuilder url = new StringBuilder();
+            ReadProperties readProperties = new ReadProperties();
+            String url = readProperties.getProp("urlJdbcConnection");
+            return DriverManager.getConnection(url);
 
-            url.
-                    append("jdbc:mysql://").        //db type
-                    append("localhost:").           //host name
-                    append("3306/").                //port
-                    append("usersdb?").          //db name
-                    append("user=root&").           //login
-                    append("password=admin").       //password
-                    append("&serverTimezone=UTC");
-
-            System.out.println("URL: " + url + "\n");
-
-            return DriverManager.getConnection(url.toString());
-
-        } catch (InstantiationException | SQLException | IllegalAccessException | ClassNotFoundException e) {
+        } catch (InstantiationException | SQLException | IllegalAccessException | ClassNotFoundException | IOException e) {
             e.printStackTrace();
             throw new IllegalStateException();
         }

@@ -1,13 +1,14 @@
-package src.main.servlet;
+package servlet;
 
-import src.main.model.User;
-import src.main.service.Service;
+import model.User;
+import service.Service;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet("/edit")
 public class EditeServlet extends HttpServlet {
@@ -25,8 +26,12 @@ public class EditeServlet extends HttpServlet {
             resp.getWriter().println("Не введен пароль или логин или ID");
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         } else {
-            service.editeUser(user);
-            req.getRequestDispatcher("index.jsp").forward(req, resp);
+            try {
+                service.editeUser(user);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            resp.sendRedirect("/admin.jsp");
         }
     }
 }

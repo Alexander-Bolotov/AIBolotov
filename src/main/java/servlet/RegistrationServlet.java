@@ -1,14 +1,18 @@
-package src.main.servlet;
+package servlet;
 
 
-import src.main.model.User;
-import src.main.service.Service;
+
+import model.User;
+import service.Service;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
@@ -24,12 +28,20 @@ public class RegistrationServlet extends HttpServlet {
             resp.setContentType("text/html;charset=utf-8");
             resp.getWriter().println("Не введен пароль или логин");
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        } else if(service.addUser(new User(name, password, role))) {
-            req.getRequestDispatcher("index.jsp").forward(req, resp);
         } else {
-            resp.setContentType("text/html;charset=utf-8");
-            resp.getWriter().println("Какая-то фигня");
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            try {
+                if(service.addUser(new User(name, password, role))) {
+                    resp.sendRedirect("/admin.jsp");
+                } else {
+
+                    req.setAttribute("error", 1);
+                    req.getRequestDispatcher("/admin.jsp").forward(req, resp);
+//                    resp.setContentType("text/html;charset=utf-8");
+//                    resp.getWriter().println("Какая-то фигня");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

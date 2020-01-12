@@ -1,4 +1,4 @@
-<%@ page import="src.main.service.Service" %>
+<%@ page import="service.Service" %>
 <% Service service = Service.getInstance();
 %>
 <% HttpSession session1 = request.getSession();%>
@@ -9,8 +9,26 @@
     <title>Admin page</title>
 </head>
 <body>
+<p>Сессия: name = <%= session1.getAttribute("name")%>
+    password = <%=session1.getAttribute("password")%>
+    role = <%=session1.getAttribute("role")%>
+</p>
+<p><a href="${pageContext.request.contextPath}/admin.jsp">Перейти на admin.jsp</a></p>
+<p><a href="${pageContext.request.contextPath}/user.jsp">Перейти на user.jsp</a></p>
 <p>Привет, <%=session1.getAttribute("name")%></p>
 <a href="${pageContext.request.contextPath}/logout">Разлогиниться</a>
+
+<hr/>
+<p> Добавить User-a в БД
+    <%--    <a href="registration.html">Добавить пользователя</a>--%>
+    <form action="${pageContext.request.contextPath}/registration" method="POST">
+        Name: <input type="text" name="name"/>
+<p>
+    Password: <input type="password" name="password"/>
+<p>
+    <input type="submit" value="Добавить">
+    </form>
+<hr/>
 <hr/>
 <form action="${pageContext.request.contextPath}/registration" method="POST">
     <p>
