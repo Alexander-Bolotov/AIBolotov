@@ -2,6 +2,7 @@ package servlet;
 
 
 import service.Service;
+import service.ServiceIml;
 
 
 import javax.servlet.ServletException;
@@ -16,7 +17,7 @@ import java.sql.SQLException;
 public class DeleteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Service service = Service.getInstance();
+        Service service = ServiceIml.getInstance();
         Long id = Long.parseLong(req.getParameter("id"));
         if (id==null) {
             resp.setContentType("text/html;charset=utf-8");

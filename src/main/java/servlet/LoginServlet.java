@@ -2,6 +2,7 @@ package servlet;
 
 import model.User;
 import service.Service;
+import service.ServiceIml;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +17,7 @@ import java.sql.SQLException;
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Service service = new Service();
+        Service service = ServiceIml.getInstance();
         final String name = req.getParameter("name");
         final String password = req.getParameter("password");
         String role = null;

@@ -1,4 +1,4 @@
-package dao;
+package factory;
 
 import dao.UserDAO;
 import dao.UserHibernateDAO;
@@ -8,7 +8,7 @@ import util.ReadProperties;
 
 import java.io.IOException;
 
-public class UserDaoFactory {
+public class UserDaoFactoryIml implements UserDaoFactory {
 
     public UserDAO createDAO() throws IOException {
         ReadProperties readProperties = new ReadProperties();

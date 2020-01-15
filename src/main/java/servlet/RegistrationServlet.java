@@ -4,6 +4,7 @@ package servlet;
 
 import model.User;
 import service.Service;
+import service.ServiceIml;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,7 +20,7 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Service service = Service.getInstance();
+        Service service = ServiceIml.getInstance();
 
         String name = req.getParameter("name");
         String password = req.getParameter("password");
@@ -36,8 +37,6 @@ public class RegistrationServlet extends HttpServlet {
 
                     req.setAttribute("error", 1);
                     req.getRequestDispatcher("/admin.jsp").forward(req, resp);
-//                    resp.setContentType("text/html;charset=utf-8");
-//                    resp.getWriter().println("Какая-то фигня");
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

@@ -1,6 +1,7 @@
+<%@ page import="service.ServiceIml" %>
 <%@ page import="service.Service" %>
 <%
-    Service service = Service.getInstance();
+    Service service = ServiceIml.getInstance();
 
     HttpSession httpSession = request.getSession();
 %>

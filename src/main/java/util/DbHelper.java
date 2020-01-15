@@ -69,7 +69,9 @@ public class DbHelper {
             DriverManager.registerDriver((Driver) Class.forName("com.mysql.cj.jdbc.Driver").newInstance());
             ReadProperties readProperties = new ReadProperties();
             String url = readProperties.getProp("urlJdbcConnection");
-            return DriverManager.getConnection(url);
+            Connection connection= DriverManager.getConnection(url);
+            connection.setAutoCommit(false);
+            return connection;
 
         } catch (InstantiationException | SQLException | IllegalAccessException | ClassNotFoundException | IOException e) {
             e.printStackTrace();

@@ -38,10 +38,13 @@ public class UserJdbcDAO implements UserDAO{
             userResult.setName(result.getString("name"));
             userResult.setPassword(result.getString("password"));
             userResult.setRole(result.getString("role"));
-
+            connection.commit();
 
         } catch (SQLException e) {
+            connection.rollback();
             e.printStackTrace();
+        }finally {
+            connection.close();
         }
         return userResult;
     }
@@ -65,9 +68,13 @@ public class UserJdbcDAO implements UserDAO{
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.executeUpdate();
+            connection.commit();
             return  true;
         } catch (SQLException e) {
+            connection.rollback();
             e.printStackTrace();
+        } finally {
+            connection.close();
         }
         return false;
     }
@@ -76,8 +83,12 @@ public class UserJdbcDAO implements UserDAO{
         try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM users WHERE name= ?")) {
             preparedStatement.setString(1, name);
             preparedStatement.execute();
+            connection.commit();
         } catch (SQLException ex) {
+            connection.rollback();
             ex.printStackTrace();
+        } finally {
+            connection.close();
         }
     }
 
@@ -86,8 +97,12 @@ public class UserJdbcDAO implements UserDAO{
         try(PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM users WHERE id =?")) {
             preparedStatement.setLong(1, id);
             preparedStatement.execute();
+            connection.commit();
         } catch (SQLException e) {
+            connection.rollback();
             e.printStackTrace();
+        } finally {
+             connection.close();
         }
     }
 
@@ -97,8 +112,12 @@ public class UserJdbcDAO implements UserDAO{
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setLong(3, user.getId());
             preparedStatement.executeUpdate();
+            connection.commit();
         } catch (SQLException e) {
+            connection.rollback();
             e.printStackTrace();
+        } finally {
+            connection.close();
         }
     }
 

@@ -2,6 +2,8 @@ package servlet;
 
 import model.User;
 import service.Service;
+import service.ServiceIml;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +16,7 @@ import java.sql.SQLException;
 public class EditeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Service service = Service.getInstance();
+        Service service = ServiceIml.getInstance();
 
         Long id = Long.parseLong(req.getParameter("id"));
         String name = req.getParameter("name");
